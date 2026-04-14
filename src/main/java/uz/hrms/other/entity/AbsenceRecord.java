@@ -3,7 +3,6 @@ package uz.hrms.other.entity;
 import jakarta.persistence.*;
 import uz.hrms.other.AbsenceStatus;
 import uz.hrms.other.AbsenceType;
-import uz.hrms.other.BaseEntity;
 import uz.hrms.other.PayrollSyncStatus;
 
 import java.time.LocalDate;

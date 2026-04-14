@@ -3,7 +3,6 @@ package uz.hrms.other.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import uz.hrms.other.BaseEntity;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;

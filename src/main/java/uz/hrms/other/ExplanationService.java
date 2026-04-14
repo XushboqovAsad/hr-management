@@ -17,12 +17,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.entity.AuditLog;
-import uz.hrms.other.entity.Department;
-import uz.hrms.other.entity.Employee;
-import uz.hrms.other.entity.RewardAction;
+import uz.hrms.other.entity.*;
 import uz.hrms.other.repository.AuditLogRepository;
-import uz.hrms.other.repository.DepartmentRepository;
-import uz.hrms.other.repository.EmployeeRepository;
+import uz.hrms.other.repository.*;
+import uz.hrms.other.enums.*;
 
 @Service
 @Transactional

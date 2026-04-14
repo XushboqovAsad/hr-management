@@ -11,7 +11,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import uz.hrms.other.BaseEntity;
 import uz.hrms.other.enums.StaffingUnitStatus;
 
 import java.math.BigDecimal;

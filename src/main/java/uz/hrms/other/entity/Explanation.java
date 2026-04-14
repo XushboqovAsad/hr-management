@@ -1,7 +1,6 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.BaseEntity;
 import uz.hrms.other.ExplanationStatus;
 
 import java.time.OffsetDateTime;

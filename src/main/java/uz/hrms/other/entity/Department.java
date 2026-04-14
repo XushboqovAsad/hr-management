@@ -8,7 +8,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import uz.hrms.other.BaseEntity;
 import uz.hrms.other.enums.DepartmentUnitType;
 
 import java.time.OffsetDateTime;

@@ -2,11 +2,10 @@ package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
 import uz.hrms.other.AbsenceDocumentStatus;
-import uz.hrms.other.BaseEntity;
 
 @Entity
 @Table(schema = "hr", name = "absence_documents")
-class AbsenceDocument extends BaseEntity {
+public class AbsenceDocument extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "absence_record_id", nullable = false)

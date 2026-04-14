@@ -20,6 +20,7 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import uz.hrms.other.entity.BaseEntity;
 
 public final class LmsDomain {
     private LmsDomain() {

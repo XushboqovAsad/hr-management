@@ -2,7 +2,6 @@ package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
 import uz.hrms.other.AttendanceIncident;
-import uz.hrms.other.BaseEntity;
 import uz.hrms.other.ExplanationIncidentSource;
 import uz.hrms.other.ExplanationIncidentStatus;
 

@@ -3,12 +3,10 @@ package uz.hrms.other.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import uz.hrms.other.BaseEntity;
-import uz.hrms.other.UserAccount;
 
 @Entity
 @Table(schema = "hr", name = "absence_history")
-class AbsenceHistory extends BaseEntity {
+public class AbsenceHistory extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "absence_record_id", nullable = false)

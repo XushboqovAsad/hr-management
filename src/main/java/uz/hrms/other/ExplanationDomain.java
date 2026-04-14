@@ -16,10 +16,7 @@ import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
-import uz.hrms.other.entity.Department;
-import uz.hrms.other.entity.Employee;
-import uz.hrms.other.entity.Explanation;
-import uz.hrms.other.entity.ExplanationIncident;
+import uz.hrms.other.entity.*;
 
 public final class ExplanationDomain {
     private ExplanationDomain() {

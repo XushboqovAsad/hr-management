@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import uz.hrms.other.BaseEntity;
 
 @Entity
 @Table(schema = "hr", name = "positions")

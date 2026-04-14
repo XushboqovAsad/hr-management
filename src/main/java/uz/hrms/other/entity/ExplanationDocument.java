@@ -1,11 +1,10 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.BaseEntity;
 
-public c@Entity
+@Entity
 @Table(schema = "hr", name = "explanation_documents")
-class ExplanationDocument extends BaseEntity {
+public class ExplanationDocument extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "explanation_id", nullable = false)
