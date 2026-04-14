@@ -18,13 +18,15 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.hrms.other.entity.BaseEntity;
+import uz.hrms.other.entity.UserAccount;
+import uz.hrms.other.enums.PayrollSyncStatus;
 
 public final class BusinessTripDomain {
     private BusinessTripDomain() {
     }
 }
 
-enum BusinessTripStatus {
+public enum BusinessTripStatus {
     DRAFT,
     ON_APPROVAL,
     APPROVED,
@@ -58,16 +60,9 @@ enum BusinessTripApprovalStatus {
     SKIPPED
 }
 
-public enum PayrollSyncStatus {
-    PENDING,
-    SENT,
-    ACKNOWLEDGED,
-    FAILED
-}
-
 @Entity
 @Table(schema = "hr", name = "business_trips")
-class BusinessTrip extends BaseEntity {
+public class BusinessTrip extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
@@ -116,7 +111,7 @@ class BusinessTrip extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
-    private BusinessTripStatus status = BusinessTripStatus.DRAFT;
+    private uz.hrms.other.enums.BusinessTripStatus status = uz.hrms.other.enums.BusinessTripStatus.DRAFT;
 
     @Column(name = "order_number", length = 100)
     private String orderNumber;
@@ -258,11 +253,11 @@ class BusinessTrip extends BaseEntity {
         this.commentText = commentText;
     }
 
-    public BusinessTripStatus getStatus() {
+    public uz.hrms.other.enums.BusinessTripStatus getStatus() {
         return status;
     }
 
-    public void setStatus(BusinessTripStatus status) {
+    public void setStatus(uz.hrms.other.enums.BusinessTripStatus status) {
         this.status = status;
     }
 
@@ -349,7 +344,7 @@ class BusinessTripDocument extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "document_kind", nullable = false, length = 40)
-    private BusinessTripDocumentKind documentKind;
+    private uz.hrms.other.enums.BusinessTripDocumentKind documentKind;
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
@@ -383,11 +378,11 @@ class BusinessTripDocument extends BaseEntity {
         this.businessTrip = businessTrip;
     }
 
-    public BusinessTripDocumentKind getDocumentKind() {
+    public uz.hrms.other.enums.BusinessTripDocumentKind getDocumentKind() {
         return documentKind;
     }
 
-    public void setDocumentKind(BusinessTripDocumentKind documentKind) {
+    public void setDocumentKind(uz.hrms.other.enums.BusinessTripDocumentKind documentKind) {
         this.documentKind = documentKind;
     }
 
@@ -469,7 +464,7 @@ class BusinessTripApproval extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_role", nullable = false, length = 50)
-    private BusinessTripApprovalRole approvalRole;
+    private uz.hrms.other.enums.BusinessTripApprovalRole approvalRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approver_user_id")
@@ -477,7 +472,7 @@ class BusinessTripApproval extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 30)
-    private BusinessTripApprovalStatus status = BusinessTripApprovalStatus.PENDING;
+    private uz.hrms.other.enums.BusinessTripApprovalStatus status = uz.hrms.other.enums.BusinessTripApprovalStatus.PENDING;
 
     @Column(name = "decision_comment", length = 1000)
     private String decisionComment;
@@ -501,11 +496,11 @@ class BusinessTripApproval extends BaseEntity {
         this.stepNo = stepNo;
     }
 
-    public BusinessTripApprovalRole getApprovalRole() {
+    public uz.hrms.other.enums.BusinessTripApprovalRole getApprovalRole() {
         return approvalRole;
     }
 
-    public void setApprovalRole(BusinessTripApprovalRole approvalRole) {
+    public void setApprovalRole(uz.hrms.other.enums.BusinessTripApprovalRole approvalRole) {
         this.approvalRole = approvalRole;
     }
 
@@ -517,11 +512,11 @@ class BusinessTripApproval extends BaseEntity {
         this.approverUser = approverUser;
     }
 
-    public BusinessTripApprovalStatus getStatus() {
+    public uz.hrms.other.enums.BusinessTripApprovalStatus getStatus() {
         return status;
     }
 
-    public void setStatus(BusinessTripApprovalStatus status) {
+    public void setStatus(uz.hrms.other.enums.BusinessTripApprovalStatus status) {
         this.status = status;
     }
 
@@ -634,15 +629,7 @@ interface BusinessTripRepository extends JpaRepository<BusinessTrip, UUID> {
 
     List<BusinessTrip> findAllByEmployeeIdAndDeletedFalseOrderByCreatedAtDesc(UUID employeeId);
 
-    List<BusinessTrip> findAllByStatusInAndEndDateBeforeAndDeletedFalse(List<BusinessTripStatus> statuses, LocalDate date);
-}
-
-interface BusinessTripDocumentRepository extends JpaRepository<BusinessTripDocument, UUID> {
-    Optional<BusinessTripDocument> findByIdAndDeletedFalse(UUID id);
-
-    List<BusinessTripDocument> findAllByBusinessTripIdAndDeletedFalseOrderByCreatedAtDesc(UUID businessTripId);
-
-    List<BusinessTripDocument> findAllByBusinessTripIdAndDocumentKindAndTitleIgnoreCaseAndDeletedFalseOrderByVersionNoDesc(UUID businessTripId, BusinessTripDocumentKind documentKind, String title);
+    List<BusinessTrip> findAllByStatusInAndEndDateBeforeAndDeletedFalse(List<uz.hrms.other.enums.BusinessTripStatus> statuses, LocalDate date);
 }
 
 interface BusinessTripApprovalRepository extends JpaRepository<BusinessTripApproval, UUID> {

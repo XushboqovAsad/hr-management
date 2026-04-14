@@ -28,7 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.entity.AuditLog;
 import uz.hrms.other.repository.AuditLogRepository;
 
-enum ReferenceCatalogKey {
+public enum ReferenceCatalogKey {
     ORDER_TYPES("order-types", "Типы приказов", "Справочник типов кадровых приказов"),
     LEAVE_TYPES("leave-types", "Виды отпусков", "Параметры отпускных типов"),
     DISCIPLINARY_ACTION_TYPES("disciplinary-action-types", "Виды взысканий", "Типы дисциплинарных взысканий"),
@@ -59,7 +59,7 @@ enum ReferenceCatalogKey {
         return description;
     }
 
-    static ReferenceCatalogKey fromPath(String path) {
+    public static ReferenceCatalogKey fromPath(String path) {
         for (ReferenceCatalogKey value : values()) {
             if (value.path.equalsIgnoreCase(path)) {
                 return value;
@@ -69,10 +69,10 @@ enum ReferenceCatalogKey {
     }
 }
 
-record ReferenceCatalogDefinitionResponse(String key, String label, String description) {
+public record ReferenceCatalogDefinitionResponse(String key, String label, String description) {
 }
 
-record ReferenceCatalogItemResponse(
+public record ReferenceCatalogItemResponse(
     UUID id,
     String code,
     String name,
@@ -82,7 +82,7 @@ record ReferenceCatalogItemResponse(
 ) {
 }
 
-record ReferenceCatalogUpsertRequest(
+public record ReferenceCatalogUpsertRequest(
     @NotBlank String code,
     @NotBlank String name,
     String description,
@@ -93,7 +93,7 @@ record ReferenceCatalogUpsertRequest(
 
 @org.springframework.stereotype.Service
 @Validated
-class ReferenceCatalogService {
+public class ReferenceCatalogService {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final AuditLogRepository auditLogRepository;
@@ -109,7 +109,7 @@ class ReferenceCatalogService {
         this.objectMapper = objectMapper;
     }
 
-    List<ReferenceCatalogDefinitionResponse> definitions() {
+    public List<ReferenceCatalogDefinitionResponse> definitions() {
         return List.of(
             new ReferenceCatalogDefinitionResponse(ReferenceCatalogKey.ORDER_TYPES.path(), ReferenceCatalogKey.ORDER_TYPES.label(), ReferenceCatalogKey.ORDER_TYPES.description()),
             new ReferenceCatalogDefinitionResponse(ReferenceCatalogKey.LEAVE_TYPES.path(), ReferenceCatalogKey.LEAVE_TYPES.label(), ReferenceCatalogKey.LEAVE_TYPES.description()),
@@ -121,11 +121,11 @@ class ReferenceCatalogService {
         );
     }
 
-    List<ReferenceCatalogItemResponse> list(ReferenceCatalogKey catalog) {
+    public List<ReferenceCatalogItemResponse> list(ReferenceCatalogKey catalog) {
         return jdbcTemplate.query(selectSql(catalog), new MapSqlParameterSource(), rowMapper(catalog));
     }
 
-    ReferenceCatalogItemResponse create(ReferenceCatalogKey catalog, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
+    public ReferenceCatalogItemResponse create(ReferenceCatalogKey catalog, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
         validate(catalog, request, null);
         UUID id = UUID.randomUUID();
         MapSqlParameterSource params = commonParams(id, request, actor.userId());
@@ -135,7 +135,7 @@ class ReferenceCatalogService {
         return created;
     }
 
-    ReferenceCatalogItemResponse update(ReferenceCatalogKey catalog, UUID id, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
+    public ReferenceCatalogItemResponse update(ReferenceCatalogKey catalog, UUID id, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
         ReferenceCatalogItemResponse before = get(catalog, id);
         validate(catalog, request, id);
         MapSqlParameterSource params = commonParams(id, request, actor.userId());
@@ -384,66 +384,4 @@ class ReferenceCatalogService {
     }
 }
 
-@RestController
-@RequestMapping("/api/v1/reference")
-@Validated
-class ReferenceCatalogController {
 
-    private final ReferenceCatalogService referenceCatalogService;
-    private final AccessPolicy accessPolicy;
-
-    ReferenceCatalogController(ReferenceCatalogService referenceCatalogService, AccessPolicy accessPolicy) {
-        this.referenceCatalogService = referenceCatalogService;
-        this.accessPolicy = accessPolicy;
-    }
-
-    @GetMapping("/catalogs")
-    List<ReferenceCatalogDefinitionResponse> definitions(Authentication authentication) {
-        ensureRead(authentication);
-        return referenceCatalogService.definitions();
-    }
-
-    @GetMapping("/catalogs/{catalog}")
-    List<ReferenceCatalogItemResponse> list(Authentication authentication, @PathVariable String catalog) {
-        ensureRead(authentication);
-        return referenceCatalogService.list(ReferenceCatalogKey.fromPath(catalog));
-    }
-
-    @PostMapping("/catalogs/{catalog}")
-    @ResponseStatus(HttpStatus.CREATED)
-    ReferenceCatalogItemResponse create(Authentication authentication, @PathVariable String catalog, @Valid @RequestBody ReferenceCatalogUpsertRequest request) {
-        ensureWrite(authentication);
-        return referenceCatalogService.create(ReferenceCatalogKey.fromPath(catalog), request, currentUser(authentication));
-    }
-
-    @PutMapping("/catalogs/{catalog}/{id}")
-    ReferenceCatalogItemResponse update(Authentication authentication, @PathVariable String catalog, @PathVariable UUID id, @Valid @RequestBody ReferenceCatalogUpsertRequest request) {
-        ensureWrite(authentication);
-        return referenceCatalogService.update(ReferenceCatalogKey.fromPath(catalog), id, request, currentUser(authentication));
-    }
-
-    private void ensureRead(Authentication authentication) {
-        if (accessPolicy.hasPermission(authentication, "ROLE", "READ")) {
-            return;
-        }
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-    }
-
-    private void ensureWrite(Authentication authentication) {
-        if (accessPolicy.hasPermission(authentication, "ROLE", "WRITE")) {
-            return;
-        }
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-    }
-
-    private CurrentUser currentUser(Authentication authentication) {
-        if (authentication == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication required");
-        }
-        Object principal = authentication.getPrincipal();
-        if ((principal instanceof CurrentUser) == false) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication required");
-        }
-        return (CurrentUser) principal;
-    }
-}

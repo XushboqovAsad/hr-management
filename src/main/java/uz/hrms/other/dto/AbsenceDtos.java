@@ -2,12 +2,14 @@ package uz.hrms.other;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import uz.hrms.other.enums.*;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-record AbsenceRequest(
+public record AbsenceRequest(
     @NotNull UUID employeeId,
     UUID requesterEmployeeId,
     @NotNull AbsenceType absenceType,
@@ -18,18 +20,18 @@ record AbsenceRequest(
 ) {
 }
 
-record AbsenceDecisionRequest(
+public record AbsenceDecisionRequest(
     String hrComment
 ) {
 }
 
-record AbsenceDocumentUploadRequest(
+public record AbsenceDocumentUploadRequest(
     @NotBlank String title,
     String description
 ) {
 }
 
-record AbsenceListItemResponse(
+public record AbsenceListItemResponse(
     UUID id,
     UUID employeeId,
     AbsenceType absenceType,
@@ -41,7 +43,7 @@ record AbsenceListItemResponse(
 ) {
 }
 
-record AbsenceDocumentResponse(
+public record AbsenceDocumentResponse(
     UUID id,
     String title,
     String originalFileName,
@@ -65,7 +67,7 @@ record AbsenceHistoryResponse(
 ) {
 }
 
-record AttendanceDayMarkResponse(
+public record AttendanceDayMarkResponse(
     UUID id,
     UUID employeeId,
     LocalDate attendanceDate,
@@ -75,7 +77,7 @@ record AttendanceDayMarkResponse(
 ) {
 }
 
-record FrequentAbsenceAnalyticsResponse(
+public record FrequentAbsenceAnalyticsResponse(
     UUID employeeId,
     long recordCount,
     long totalDays,
@@ -83,7 +85,7 @@ record FrequentAbsenceAnalyticsResponse(
 ) {
 }
 
-record AbsenceResponse(
+public record AbsenceResponse(
     UUID id,
     UUID employeeId,
     UUID requesterEmployeeId,

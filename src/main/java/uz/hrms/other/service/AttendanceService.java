@@ -23,12 +23,14 @@ import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.*;
 import uz.hrms.other.entity.AuditLog;
 import uz.hrms.other.entity.*;
+import uz.hrms.other.enums.AttendanceViolationType;
+import uz.hrms.other.enums.ScudNormalizationStatus;
 import uz.hrms.other.repository.AuditLogRepository;
 import uz.hrms.other.repository.*;
 
 @Service
 @Transactional
-class AttendanceService {
+public class AttendanceService {
 
     private final ScudEventRepository scudEventRepository;
     private final WorkScheduleRepository workScheduleRepository;
@@ -98,7 +100,7 @@ class AttendanceService {
         return request;
     }
 
-    List<ScudEventIngestRequest> ingestBatch(ScudEventBatchRequest request) {
+    public List<ScudEventIngestRequest> ingestBatch(ScudEventBatchRequest request) {
         List<ScudEventIngestRequest> result = new ArrayList<>();
         for (ScudEventIngestRequest item : request.events()) {
             result.add(ingestEvent(item));
@@ -106,7 +108,7 @@ class AttendanceService {
         return result;
     }
 
-    List<AttendanceSummaryResponse> processWorkDate(LocalDate workDate, UUID employeeId) {
+    public List<AttendanceSummaryResponse> processWorkDate(LocalDate workDate, UUID employeeId) {
         List<UUID> employeeIds = employeeId == null ? activeEmployeeIds(workDate) : List.of(employeeId);
         List<AttendanceSummaryResponse> processed = new ArrayList<>();
         boolean globalDataPresent = hasAnyScudData(workDate);
@@ -128,7 +130,7 @@ class AttendanceService {
     }
 
     @Transactional(readOnly = true)
-    AttendanceDashboardResponse dashboard(LocalDate from, LocalDate to, UUID departmentId, UUID employeeId, AttendanceViolationType violationType) {
+    public AttendanceDashboardResponse dashboard(LocalDate from, LocalDate to, UUID departmentId, UUID employeeId, AttendanceViolationType violationType) {
         LocalDate rangeStart = from == null ? LocalDate.now().minusDays(30) : from;
         LocalDate rangeEnd = to == null ? LocalDate.now() : to;
         List<AttendanceSummary> summaries = employeeId == null

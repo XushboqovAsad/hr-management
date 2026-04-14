@@ -3,12 +3,14 @@ package uz.hrms.other;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import uz.hrms.other.enums.ScudEventType;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-record ScudEventIngestRequest(
+public record ScudEventIngestRequest(
     UUID employeeId,
     String badgeNumber,
     String sourceSystem,
@@ -57,7 +59,7 @@ record AttendanceDashboardItemResponse(
 ) {
 }
 
-record AttendanceViolationResponse(
+public record AttendanceViolationResponse(
     UUID id,
     UUID employeeId,
     UUID attendanceSummaryId,
@@ -101,7 +103,7 @@ record AttendanceLogResponse(
 ) {
 }
 
-record AttendanceSummaryResponse(
+public record AttendanceSummaryResponse(
     UUID id,
     UUID employeeId,
     UUID departmentId,
@@ -123,7 +125,7 @@ record AttendanceSummaryResponse(
 ) {
 }
 
-record AttendanceDashboardResponse(
+public record AttendanceDashboardResponse(
     long totalDays,
     long lateCount,
     long earlyLeaveCount,

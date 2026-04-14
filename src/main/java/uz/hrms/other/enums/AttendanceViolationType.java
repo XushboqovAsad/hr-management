@@ -1,5 +1,6 @@
 package uz.hrms.other.enums;
 
+
 public enum AttendanceViolationType {
     LATENESS,
     EARLY_LEAVE,
@@ -8,3 +9,4 @@ public enum AttendanceViolationType {
     NO_DATA,
     OVERTIME
 }
+

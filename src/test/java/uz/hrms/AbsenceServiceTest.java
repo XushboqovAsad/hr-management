@@ -18,6 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.*;
+import uz.hrms.other.enums.AbsenceDocumentStatus;
+import uz.hrms.other.enums.AbsenceStatus;
+import uz.hrms.other.enums.BusinessTripStatus;
 import uz.hrms.other.repository.AuditLogRepository;
 
 class AbsenceServiceTest {

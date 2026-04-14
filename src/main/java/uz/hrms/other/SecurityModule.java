@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 
 @Component("accessPolicy")
-class AccessPolicy {
+public class AccessPolicy {
 
     private final UserRoleAssignmentRepository userRoleAssignmentRepository;
     private final RolePermissionRepository rolePermissionRepository;
@@ -49,7 +49,7 @@ class AccessPolicy {
         this.departmentRepository = departmentRepository;
     }
 
-    boolean hasPermission(Authentication authentication, String module, String action) {
+    public boolean hasPermission(Authentication authentication, String module, String action) {
         CurrentUser currentUser = currentUser(authentication);
         if (currentUser == null) {
             return false;

@@ -18,6 +18,10 @@ import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.*;
 import uz.hrms.other.entity.AuditLog;
 import uz.hrms.other.entity.*;
+import uz.hrms.other.enums.BusinessTripApprovalRole;
+import uz.hrms.other.enums.BusinessTripApprovalStatus;
+import uz.hrms.other.enums.BusinessTripDocumentKind;
+import uz.hrms.other.enums.BusinessTripStatus;
 import uz.hrms.other.repository.AuditLogRepository;
 import uz.hrms.other.repository.*;
 
@@ -67,7 +71,7 @@ class BusinessTripService {
 
     @Transactional(readOnly = true)
     List<BusinessTripListItemResponse> listOverdueReports() {
-        List<BusinessTripStatus> statuses = List.of(BusinessTripStatus.ORDER_CREATED, BusinessTripStatus.IN_PROGRESS, BusinessTripStatus.REPORT_PENDING, BusinessTripStatus.OVERDUE);
+        List<uz.hrms.other.enums.BusinessTripStatus> statuses = List.of(uz.hrms.other.enums.BusinessTripStatus.ORDER_CREATED, uz.hrms.other.enums.BusinessTripStatus.IN_PROGRESS, uz.hrms.other.enums.BusinessTripStatus.REPORT_PENDING, uz.hrms.other.enums.BusinessTripStatus.OVERDUE);
         return businessTripRepository.findAllByStatusInAndEndDateBeforeAndDeletedFalse(statuses, LocalDate.now())
             .stream()
             .filter(trip -> trip.getReportSubmittedAt() == null)
@@ -85,7 +89,7 @@ class BusinessTripService {
         validateRequest(request);
         BusinessTrip trip = new BusinessTrip();
         applyTrip(trip, request);
-        trip.setStatus(BusinessTripStatus.DRAFT);
+        trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.DRAFT);
         BusinessTrip saved = businessTripRepository.save(trip);
         writeHistory(saved, "CREATED", null, saved.getStatus(), "Draft created", tripPayload(saved));
         writeAudit("BUSINESS_TRIP_CREATED", saved.getId(), null, tripPayload(saved));
@@ -95,7 +99,7 @@ class BusinessTripService {
     BusinessTripResponse update(UUID id, BusinessTripRequest request) {
         validateRequest(request);
         BusinessTrip trip = getTrip(id);
-        if (trip.getStatus() != BusinessTripStatus.DRAFT && trip.getStatus() != BusinessTripStatus.REJECTED) {
+        if (trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.DRAFT && trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.REJECTED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only draft or rejected trip can be updated");
         }
         String before = tripPayload(trip);
@@ -108,11 +112,11 @@ class BusinessTripService {
 
     BusinessTripResponse submit(UUID id) {
         BusinessTrip trip = getTrip(id);
-        if (trip.getStatus() != BusinessTripStatus.DRAFT && trip.getStatus() != BusinessTripStatus.REJECTED) {
+        if (trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.DRAFT && trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.REJECTED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only draft or rejected trip can be submitted");
         }
-        BusinessTripStatus previousStatus = trip.getStatus();
-        trip.setStatus(BusinessTripStatus.ON_APPROVAL);
+        uz.hrms.other.enums.BusinessTripStatus previousStatus = trip.getStatus();
+        trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.ON_APPROVAL);
         BusinessTrip saved = businessTripRepository.save(trip);
         resetApprovals(saved);
         writeHistory(saved, "SUBMITTED", previousStatus, saved.getStatus(), "Trip submitted for approval", tripPayload(saved));
@@ -123,19 +127,19 @@ class BusinessTripService {
     BusinessTripResponse approve(UUID tripId, UUID approvalId, String commentText) {
         BusinessTrip trip = getTrip(tripId);
         BusinessTripApproval approval = getApproval(tripId, approvalId);
-        if (approval.getStatus() != BusinessTripApprovalStatus.PENDING) {
+        if (approval.getStatus() != uz.hrms.other.enums.BusinessTripApprovalStatus.PENDING) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Approval step already decided");
         }
-        approval.setStatus(BusinessTripApprovalStatus.APPROVED);
+        approval.setStatus(uz.hrms.other.enums.BusinessTripApprovalStatus.APPROVED);
         approval.setDecisionComment(trimToNull(commentText));
         approval.setDecidedAt(OffsetDateTime.now());
         businessTripApprovalRepository.save(approval);
         boolean allApproved = businessTripApprovalRepository.findAllByBusinessTripIdAndDeletedFalseOrderByStepNoAsc(tripId)
             .stream()
-            .allMatch(step -> step.getStatus() == BusinessTripApprovalStatus.APPROVED || step.getStatus() == BusinessTripApprovalStatus.SKIPPED);
-        BusinessTripStatus previousStatus = trip.getStatus();
+            .allMatch(step -> step.getStatus() == uz.hrms.other.enums.BusinessTripApprovalStatus.APPROVED || step.getStatus() == uz.hrms.other.enums.BusinessTripApprovalStatus.SKIPPED);
+        uz.hrms.other.enums.BusinessTripStatus previousStatus = trip.getStatus();
         if (allApproved) {
-            trip.setStatus(BusinessTripStatus.APPROVED);
+            trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.APPROVED);
             businessTripRepository.save(trip);
         }
         writeHistory(trip, "APPROVED_STEP", previousStatus, trip.getStatus(), commentText, approvalPayload(approval));
@@ -146,15 +150,15 @@ class BusinessTripService {
     BusinessTripResponse reject(UUID tripId, UUID approvalId, String commentText) {
         BusinessTrip trip = getTrip(tripId);
         BusinessTripApproval approval = getApproval(tripId, approvalId);
-        if (approval.getStatus() != BusinessTripApprovalStatus.PENDING) {
+        if (approval.getStatus() != uz.hrms.other.enums.BusinessTripApprovalStatus.PENDING) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Approval step already decided");
         }
-        approval.setStatus(BusinessTripApprovalStatus.REJECTED);
+        approval.setStatus(uz.hrms.other.enums.BusinessTripApprovalStatus.REJECTED);
         approval.setDecisionComment(trimToNull(commentText));
         approval.setDecidedAt(OffsetDateTime.now());
         businessTripApprovalRepository.save(approval);
-        BusinessTripStatus previousStatus = trip.getStatus();
-        trip.setStatus(BusinessTripStatus.REJECTED);
+        uz.hrms.other.enums.BusinessTripStatus previousStatus = trip.getStatus();
+        trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.REJECTED);
         businessTripRepository.save(trip);
         writeHistory(trip, "REJECTED", previousStatus, trip.getStatus(), commentText, approvalPayload(approval));
         writeAudit("BUSINESS_TRIP_REJECTED", trip.getId(), null, approvalPayload(approval));
@@ -163,7 +167,7 @@ class BusinessTripService {
 
     BusinessTripPrintFormResponse generateOrder(UUID id, String templateCode) {
         BusinessTrip trip = getTrip(id);
-        if (trip.getStatus() != BusinessTripStatus.APPROVED && trip.getStatus() != BusinessTripStatus.ORDER_CREATED) {
+        if (trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.APPROVED && trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.ORDER_CREATED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Trip must be approved before order generation");
         }
         String orderNumber = trip.getOrderNumber() == null ? nextOrderNumber() : trip.getOrderNumber();
@@ -171,24 +175,24 @@ class BusinessTripService {
         trip.setOrderTemplateCode(StringUtils.hasText(templateCode) ? templateCode : "BUSINESS_TRIP_DEFAULT");
         trip.setOrderGeneratedAt(OffsetDateTime.now());
         trip.setOrderPrintFormHtml(buildPrintForm(trip));
-        if (trip.getStatus() == BusinessTripStatus.APPROVED) {
-            trip.setStatus(BusinessTripStatus.ORDER_CREATED);
+        if (trip.getStatus() == uz.hrms.other.enums.BusinessTripStatus.APPROVED) {
+            trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.ORDER_CREATED);
         }
         businessTripRepository.save(trip);
-        writeHistory(trip, "ORDER_GENERATED", BusinessTripStatus.APPROVED, trip.getStatus(), "Order generated", tripPayload(trip));
+        writeHistory(trip, "ORDER_GENERATED", uz.hrms.other.enums.BusinessTripStatus.APPROVED, trip.getStatus(), "Order generated", tripPayload(trip));
         writeAudit("BUSINESS_TRIP_ORDER_GENERATED", trip.getId(), null, tripPayload(trip));
         return new BusinessTripPrintFormResponse(trip.getId(), trip.getOrderNumber(), trip.getOrderTemplateCode(), trip.getOrderPrintFormHtml());
     }
 
     BusinessTripResponse submitReport(UUID id, BusinessTripReportRequest request) {
         BusinessTrip trip = getTrip(id);
-        if (trip.getStatus() == BusinessTripStatus.CLOSED || trip.getStatus() == BusinessTripStatus.CANCELLED) {
+        if (trip.getStatus() == uz.hrms.other.enums.BusinessTripStatus.CLOSED || trip.getStatus() == uz.hrms.other.enums.BusinessTripStatus.CANCELLED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Closed or cancelled trip cannot accept report");
         }
-        BusinessTripStatus previousStatus = trip.getStatus();
+        uz.hrms.other.enums.BusinessTripStatus previousStatus = trip.getStatus();
         trip.setReportText(request.reportText().trim());
         trip.setReportSubmittedAt(OffsetDateTime.now());
-        trip.setStatus(BusinessTripStatus.REPORT_SUBMITTED);
+        trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.REPORT_SUBMITTED);
         businessTripRepository.save(trip);
         writeHistory(trip, "REPORT_SUBMITTED", previousStatus, trip.getStatus(), "Report submitted", tripPayload(trip));
         writeAudit("BUSINESS_TRIP_REPORT_SUBMITTED", trip.getId(), null, tripPayload(trip));
@@ -251,13 +255,13 @@ class BusinessTripService {
         }
         boolean hasSupportingDocuments = businessTripDocumentRepository.findAllByBusinessTripIdAndDeletedFalseOrderByCreatedAtDesc(id)
             .stream()
-            .anyMatch(document -> document.getDocumentKind() == BusinessTripDocumentKind.REPORT_ATTACHMENT || document.getDocumentKind() == BusinessTripDocumentKind.CONFIRMING_DOCUMENT);
+            .anyMatch(document -> document.getDocumentKind() == uz.hrms.other.enums.BusinessTripDocumentKind.REPORT_ATTACHMENT || document.getDocumentKind() == BusinessTripDocumentKind.CONFIRMING_DOCUMENT);
         if (hasSupportingDocuments == false) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Supporting documents are required before close");
         }
-        BusinessTripStatus previousStatus = trip.getStatus();
+        uz.hrms.other.enums.BusinessTripStatus previousStatus = trip.getStatus();
         trip.setClosedAt(OffsetDateTime.now());
-        trip.setStatus(BusinessTripStatus.CLOSED);
+        trip.setStatus(uz.hrms.other.enums.BusinessTripStatus.CLOSED);
         businessTripRepository.save(trip);
         writeHistory(trip, "CLOSED", previousStatus, trip.getStatus(), "Trip closed", tripPayload(trip));
         writeAudit("BUSINESS_TRIP_CLOSED", trip.getId(), null, tripPayload(trip));
@@ -303,8 +307,8 @@ class BusinessTripService {
             item.setDeleted(true);
             businessTripApprovalRepository.save(item);
         }
-        createApprovalStep(trip, 1, BusinessTripApprovalRole.MANAGER);
-        createApprovalStep(trip, 2, BusinessTripApprovalRole.HR_ADMIN);
+        createApprovalStep(trip, 1, uz.hrms.other.enums.BusinessTripApprovalRole.MANAGER);
+        createApprovalStep(trip, 2, uz.hrms.other.enums.BusinessTripApprovalRole.HR_ADMIN);
     }
 
     private void createApprovalStep(BusinessTrip trip, int stepNo, BusinessTripApprovalRole role) {
@@ -360,7 +364,7 @@ class BusinessTripService {
     }
 
     private BusinessTripListItemResponse toListItem(BusinessTrip trip) {
-        boolean overdueReport = trip.getEndDate().isBefore(LocalDate.now()) && trip.getReportSubmittedAt() == null && trip.getStatus() != BusinessTripStatus.CLOSED && trip.getStatus() != BusinessTripStatus.CANCELLED;
+        boolean overdueReport = trip.getEndDate().isBefore(LocalDate.now()) && trip.getReportSubmittedAt() == null && trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.CLOSED && trip.getStatus() != uz.hrms.other.enums.BusinessTripStatus.CANCELLED;
         return new BusinessTripListItemResponse(
             trip.getId(),
             trip.getEmployee().getId(),
@@ -435,7 +439,7 @@ class BusinessTripService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found"));
     }
 
-    private void writeHistory(BusinessTrip trip, String actionType, BusinessTripStatus statusFrom, BusinessTripStatus statusTo, String commentText, String payload) {
+    private void writeHistory(BusinessTrip trip, String actionType, uz.hrms.other.enums.BusinessTripStatus statusFrom, BusinessTripStatus statusTo, String commentText, String payload) {
         BusinessTripHistory history = new BusinessTripHistory();
         history.setBusinessTrip(trip);
         history.setActionType(actionType);

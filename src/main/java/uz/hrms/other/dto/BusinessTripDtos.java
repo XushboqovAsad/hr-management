@@ -3,6 +3,12 @@ package uz.hrms.other;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import uz.hrms.other.enums.BusinessTripApprovalRole;
+import uz.hrms.other.enums.BusinessTripApprovalStatus;
+import uz.hrms.other.enums.BusinessTripDocumentKind;
+import uz.hrms.other.enums.BusinessTripStatus;
+import uz.hrms.other.enums.PayrollSyncStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -38,7 +44,7 @@ record BusinessTripApprovalDecisionRequest(
 }
 
 record BusinessTripDocumentUploadRequest(
-    @NotNull BusinessTripDocumentKind documentKind,
+    @NotNull uz.hrms.other.enums.BusinessTripDocumentKind documentKind,
     @NotBlank String title,
     String description
 ) {
@@ -60,7 +66,7 @@ record BusinessTripResponse(
     BigDecimal dailyAllowance,
     String fundingSource,
     String commentText,
-    BusinessTripStatus status,
+    uz.hrms.other.enums.BusinessTripStatus status,
     String orderNumber,
     OffsetDateTime orderGeneratedAt,
     OffsetDateTime reportSubmittedAt,

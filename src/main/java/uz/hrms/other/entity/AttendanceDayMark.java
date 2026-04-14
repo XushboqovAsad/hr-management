@@ -1,14 +1,14 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.AttendanceMarkSource;
+import uz.hrms.other.enums.AttendanceMarkSource;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "hr", name = "attendance_day_marks")
-class AttendanceDayMark extends BaseEntity {
+public class AttendanceDayMark extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

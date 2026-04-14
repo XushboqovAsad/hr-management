@@ -60,6 +60,7 @@ class AttendanceController {
 
     @GetMapping("/dashboard")
     @Operation(summary = "Attendance dashboard")
+    <AttendanceViolationType>
     AttendanceDashboardResponse dashboard(
         Authentication authentication,
         @RequestParam(name = "from", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,

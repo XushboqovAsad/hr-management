@@ -2,6 +2,7 @@ package uz.hrms.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import uz.hrms.auth.CurrentUser;
 import uz.hrms.auth.entity.AccessDelegation;
 import uz.hrms.auth.entity.RoleCode;
 import uz.hrms.auth.entity.UserRoleAssignment;
@@ -77,7 +78,7 @@ public class AccessPolicy {
                 .collect(Collectors.collectingAndThen(Collectors.toSet(), java.util.Set::copyOf));
 
         for (UserRoleAssignment assignment : assignments) {
-            if (authorities.contains(assignment.getRole().getId()) == false) {
+            if (!authorities.contains(assignment.getRole().getId())) {
                 continue;
             }
             if (scopeAllows(currentUser, assignment.getScopeType(), assignment.getScopeDepartmentId(), null, employeeId)) {
@@ -155,9 +156,11 @@ public class AccessPolicy {
         if (delegation.isActive() == false) {
             return false;
         }
+
         if (delegation.getValidFrom() != null && delegation.getValidFrom().isAfter(today)) {
             return false;
         }
+
         return delegation.getValidTo() == null || delegation.getValidTo().isEqual(today) || delegation.getValidTo().isAfter(today);
     }
 
@@ -165,7 +168,7 @@ public class AccessPolicy {
         if (authentication == null) {
             return null;
         }
-        if ((authentication.getPrincipal() instanceof CurrentUser currentUser) == false) {
+        if (!(authentication.getPrincipal() instanceof CurrentUser currentUser)) {
             return null;
         }
         return currentUser;
