@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:hrms;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS auth\;CREATE SCHEMA IF NOT EXISTS hr\;CREATE SCHEMA IF NOT EXISTS audit
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  jackson:
+    default-property-inclusion: non_null
+
+app:
+  jwt:
+    issuer: hrms-test
+    access-token-ttl: PT15M
+    refresh-token-ttl: P7D
+    secret: test-secret-test-secret-test-secret-test-secret-123456
+  bootstrap-admin:
+    enabled: false
