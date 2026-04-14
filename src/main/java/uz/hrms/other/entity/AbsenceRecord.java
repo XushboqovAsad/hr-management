@@ -2,7 +2,7 @@ package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
 import uz.hrms.other.enums.AbsenceStatus;
-import uz.hrms.other.AbsenceType;
+import uz.hrms.other.enums.AbsenceType;
 import uz.hrms.other.enums.PayrollSyncStatus;
 
 import java.time.LocalDate;

@@ -28,7 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.entity.AuditLog;
 import uz.hrms.other.repository.AuditLogRepository;
 
-enum ReferenceCatalogKey {
+public enum ReferenceCatalogKey {
     ORDER_TYPES("order-types", "Типы приказов", "Справочник типов кадровых приказов"),
     LEAVE_TYPES("leave-types", "Виды отпусков", "Параметры отпускных типов"),
     DISCIPLINARY_ACTION_TYPES("disciplinary-action-types", "Виды взысканий", "Типы дисциплинарных взысканий"),
@@ -59,7 +59,7 @@ enum ReferenceCatalogKey {
         return description;
     }
 
-    static ReferenceCatalogKey fromPath(String path) {
+    public static ReferenceCatalogKey fromPath(String path) {
         for (ReferenceCatalogKey value : values()) {
             if (value.path.equalsIgnoreCase(path)) {
                 return value;
@@ -82,7 +82,7 @@ public record ReferenceCatalogItemResponse(
 ) {
 }
 
-record ReferenceCatalogUpsertRequest(
+public record ReferenceCatalogUpsertRequest(
     @NotBlank String code,
     @NotBlank String name,
     String description,
@@ -109,7 +109,7 @@ public class ReferenceCatalogService {
         this.objectMapper = objectMapper;
     }
 
-    List<ReferenceCatalogDefinitionResponse> definitions() {
+    public List<ReferenceCatalogDefinitionResponse> definitions() {
         return List.of(
             new ReferenceCatalogDefinitionResponse(ReferenceCatalogKey.ORDER_TYPES.path(), ReferenceCatalogKey.ORDER_TYPES.label(), ReferenceCatalogKey.ORDER_TYPES.description()),
             new ReferenceCatalogDefinitionResponse(ReferenceCatalogKey.LEAVE_TYPES.path(), ReferenceCatalogKey.LEAVE_TYPES.label(), ReferenceCatalogKey.LEAVE_TYPES.description()),
@@ -121,11 +121,11 @@ public class ReferenceCatalogService {
         );
     }
 
-    List<ReferenceCatalogItemResponse> list(ReferenceCatalogKey catalog) {
+    public List<ReferenceCatalogItemResponse> list(ReferenceCatalogKey catalog) {
         return jdbcTemplate.query(selectSql(catalog), new MapSqlParameterSource(), rowMapper(catalog));
     }
 
-    ReferenceCatalogItemResponse create(ReferenceCatalogKey catalog, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
+    public ReferenceCatalogItemResponse create(ReferenceCatalogKey catalog, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
         validate(catalog, request, null);
         UUID id = UUID.randomUUID();
         MapSqlParameterSource params = commonParams(id, request, actor.userId());
@@ -135,7 +135,7 @@ public class ReferenceCatalogService {
         return created;
     }
 
-    ReferenceCatalogItemResponse update(ReferenceCatalogKey catalog, UUID id, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
+    public ReferenceCatalogItemResponse update(ReferenceCatalogKey catalog, UUID id, ReferenceCatalogUpsertRequest request, CurrentUser actor) {
         ReferenceCatalogItemResponse before = get(catalog, id);
         validate(catalog, request, id);
         MapSqlParameterSource params = commonParams(id, request, actor.userId());

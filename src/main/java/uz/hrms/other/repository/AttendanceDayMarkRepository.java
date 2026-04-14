@@ -1,8 +1,8 @@
 package uz.hrms.other.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import uz.hrms.other.AttendanceMarkSource;
 import uz.hrms.other.entity.AttendanceDayMark;
+import uz.hrms.other.enums.AttendanceMarkSource;
 
 import java.time.LocalDate;
 import java.util.List;

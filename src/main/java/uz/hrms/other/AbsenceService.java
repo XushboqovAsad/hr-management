@@ -24,7 +24,7 @@ import uz.hrms.other.repository.*;
 
 @Service
 @Transactional
-class AbsenceService {
+public class AbsenceService {
 
     private final AbsenceRecordRepository absenceRecordRepository;
     private final AbsenceDocumentRepository absenceDocumentRepository;
@@ -62,7 +62,7 @@ class AbsenceService {
     }
 
     @Transactional(readOnly = true)
-    List<AbsenceListItemResponse> list(UUID employeeId) {
+    public List<AbsenceListItemResponse> list(UUID employeeId) {
         List<AbsenceRecord> items = employeeId == null
             ? absenceRecordRepository.findAllByDeletedFalseOrderByCreatedAtDesc()
             : absenceRecordRepository.findAllByEmployeeIdAndDeletedFalseOrderByCreatedAtDesc(employeeId);
@@ -70,11 +70,11 @@ class AbsenceService {
     }
 
     @Transactional(readOnly = true)
-    AbsenceResponse get(UUID id) {
+    public AbsenceResponse get(UUID id) {
         return toResponse(getRecord(id));
     }
 
-    AbsenceResponse create(AbsenceRequest request) {
+    public AbsenceResponse create(AbsenceRequest request) {
         validateRequest(request, null);
         AbsenceRecord record = new AbsenceRecord();
         applyRecord(record, request);
@@ -85,7 +85,7 @@ class AbsenceService {
         return toResponse(saved);
     }
 
-    AbsenceResponse update(UUID id, AbsenceRequest request) {
+    public AbsenceResponse update(UUID id, AbsenceRequest request) {
         validateRequest(request, id);
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.DRAFT && record.getStatus() != AbsenceStatus.REJECTED) {
@@ -99,7 +99,7 @@ class AbsenceService {
         return toResponse(saved);
     }
 
-    AbsenceResponse submit(UUID id) {
+    public AbsenceResponse submit(UUID id) {
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.DRAFT && record.getStatus() != AbsenceStatus.REJECTED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only draft or rejected record can be submitted");
@@ -112,7 +112,7 @@ class AbsenceService {
         return toResponse(record);
     }
 
-    AbsenceResponse startReview(UUID id, String hrComment) {
+    public AbsenceResponse startReview(UUID id, String hrComment) {
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.SUBMITTED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only submitted record can be moved to review");
@@ -126,7 +126,7 @@ class AbsenceService {
         return toResponse(record);
     }
 
-    AbsenceResponse approve(UUID id, String hrComment) {
+    public AbsenceResponse approve(UUID id, String hrComment) {
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.SUBMITTED && record.getStatus() != AbsenceStatus.HR_REVIEW) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only submitted or under review record can be approved");
@@ -145,7 +145,7 @@ class AbsenceService {
         return toResponse(record);
     }
 
-    AbsenceResponse reject(UUID id, String hrComment) {
+    public AbsenceResponse reject(UUID id, String hrComment) {
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.SUBMITTED && record.getStatus() != AbsenceStatus.HR_REVIEW) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only submitted or under review record can be rejected");
@@ -160,7 +160,7 @@ class AbsenceService {
         return toResponse(record);
     }
 
-    AbsenceResponse close(UUID id, String hrComment) {
+    public AbsenceResponse close(UUID id, String hrComment) {
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.APPROVED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only approved record can be closed");
@@ -178,7 +178,7 @@ class AbsenceService {
         return toResponse(record);
     }
 
-    AbsenceResponse markPayrollSent(UUID id) {
+    public AbsenceResponse markPayrollSent(UUID id) {
         AbsenceRecord record = getRecord(id);
         if (record.getStatus() != AbsenceStatus.APPROVED && record.getStatus() != AbsenceStatus.CLOSED) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only approved or closed record can be sent to payroll");
@@ -190,7 +190,7 @@ class AbsenceService {
         return toResponse(record);
     }
 
-    AbsenceDocumentResponse uploadDocument(UUID id, AbsenceDocumentUploadRequest request, MultipartFile file) {
+    public AbsenceDocumentResponse uploadDocument(UUID id, AbsenceDocumentUploadRequest request, MultipartFile file) {
         AbsenceRecord record = getRecord(id);
         if (file == null || file.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File is required");
@@ -221,7 +221,7 @@ class AbsenceService {
         return toDocumentResponse(saved);
     }
 
-    List<AbsenceDocumentResponse> documents(UUID id) {
+    public List<AbsenceDocumentResponse> documents(UUID id) {
         getRecord(id);
         return absenceDocumentRepository.findAllByAbsenceRecordIdAndDeletedFalseOrderByCreatedAtDesc(id)
             .stream()
@@ -229,7 +229,7 @@ class AbsenceService {
             .toList();
     }
 
-    AbsenceDocument getDocumentEntity(UUID absenceId, UUID documentId) {
+    public AbsenceDocument getDocumentEntity(UUID absenceId, UUID documentId) {
         AbsenceDocument document = absenceDocumentRepository.findByIdAndDeletedFalse(documentId)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found"));
         if (document.getAbsenceRecord().getId().equals(absenceId) == false) {
@@ -239,7 +239,7 @@ class AbsenceService {
     }
 
     @Transactional(readOnly = true)
-    List<FrequentAbsenceAnalyticsResponse> frequentAnalytics(LocalDate from, LocalDate to, long threshold) {
+    public List<FrequentAbsenceAnalyticsResponse> frequentAnalytics(LocalDate from, LocalDate to, long threshold) {
         List<AbsenceRecord> items = absenceRecordRepository.findAllByDeletedFalseOrderByCreatedAtDesc().stream()
             .filter(item -> item.getStatus() == AbsenceStatus.APPROVED || item.getStatus() == AbsenceStatus.CLOSED)
             .filter(item -> overlaps(item.getStartDate(), item.getEndDate(), from, to))
@@ -262,7 +262,7 @@ class AbsenceService {
     }
 
     @Transactional(readOnly = true)
-    List<AttendanceDayMarkResponse> timesheet(UUID employeeId, LocalDate from, LocalDate to) {
+    public List<AttendanceDayMarkResponse> timesheet(UUID employeeId, LocalDate from, LocalDate to) {
         return attendanceDayMarkRepository.findAllByEmployeeIdAndAttendanceDateBetweenAndDeletedFalseOrderByAttendanceDateAsc(employeeId, from, to)
             .stream()
             .map(this::toAttendanceDayMarkResponse)

@@ -3,6 +3,8 @@ package uz.hrms.other.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import uz.hrms.other.enums.ScudEventType;
+import uz.hrms.other.enums.ScudNormalizationStatus;
 
 import java.time.OffsetDateTime;
 

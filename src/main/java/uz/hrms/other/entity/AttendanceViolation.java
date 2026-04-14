@@ -1,6 +1,7 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
+import uz.hrms.other.enums.AttendanceViolationType;
 
 import java.time.OffsetDateTime;
 

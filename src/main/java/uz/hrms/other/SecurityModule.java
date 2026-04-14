@@ -49,7 +49,7 @@ public class AccessPolicy {
         this.departmentRepository = departmentRepository;
     }
 
-    boolean hasPermission(Authentication authentication, String module, String action) {
+    public boolean hasPermission(Authentication authentication, String module, String action) {
         CurrentUser currentUser = currentUser(authentication);
         if (currentUser == null) {
             return false;
