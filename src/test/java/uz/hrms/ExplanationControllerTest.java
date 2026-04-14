@@ -19,6 +19,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uz.hrms.other.*;
+import uz.hrms.other.enums.ExplanationIncidentStatus;
+import uz.hrms.other.enums.ExplanationStatus;
+import uz.hrms.other.enums.RewardStatus;
 
 @WebMvcTest(controllers = ExplanationController.class)
 @AutoConfigureMockMvc(addFilters = false)

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import uz.hrms.other.enums.ExplanationStatus;
 
 @RestController
 @RequestMapping("/api/v1/explanations")

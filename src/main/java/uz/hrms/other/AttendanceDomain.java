@@ -22,62 +22,6 @@ public final class AttendanceDomain {
     }
 }
 
-enum ScudEventType {
-    ENTRY,
-    EXIT
-}
-
-enum ScudNormalizationStatus {
-    NEW,
-    PROCESSED,
-    IGNORED,
-    ERROR
-}
-
-enum AttendanceStatus {
-    PRESENT,
-    LATE,
-    EARLY_LEAVE,
-    MISSING_PUNCH,
-    ABSENT,
-    NO_DATA,
-    OVERTIME,
-    REMOTE_WORK,
-    SICK_LEAVE,
-    BUSINESS_TRIP,
-    UNPAID_LEAVE,
-    EXCUSED_ABSENCE,
-    ABSENCE_UNEXCUSED,
-    DOWNTIME,
-    OTHER,
-    MANUAL
-}
-
-enum AttendanceViolationType {
-    LATENESS,
-    EARLY_LEAVE,
-    MISSING_PUNCH,
-    ABSENCE,
-    NO_DATA,
-    OVERTIME
-}
-
-enum AttendanceViolationStatus {
-    OPEN,
-    EXPLANATION_REQUESTED,
-    EXPLAINED,
-    WAIVED,
-    CLOSED
-}
-
-enum AttendanceIncidentStatus {
-    OPEN,
-    PENDING_EXPLANATION,
-    UNDER_REVIEW,
-    RESOLVED,
-    WAIVED
-}
-
 @Entity
 @Table(schema = "hr", name = "employee_work_schedules")
 class EmployeeWorkSchedule extends BaseEntity {

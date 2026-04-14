@@ -3,7 +3,7 @@ package uz.hrms.other.entity;
 import jakarta.persistence.*;
 import uz.hrms.other.AttendanceIncident;
 import uz.hrms.other.ExplanationIncidentSource;
-import uz.hrms.other.ExplanationIncidentStatus;
+import uz.hrms.other.enums.ExplanationIncidentStatus;
 
 import java.time.OffsetDateTime;
 

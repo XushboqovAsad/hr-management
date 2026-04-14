@@ -17,64 +17,14 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.hrms.other.entity.*;
+import uz.hrms.other.enums.DisciplinaryActionStatus;
+import uz.hrms.other.enums.DisciplinaryActionType;
+import uz.hrms.other.enums.NotificationStatus;
 
 public final class ExplanationDomain {
     private ExplanationDomain() {
     }
 }
-
-
-
-public enum ExplanationIncidentStatus {
-    OPEN,
-    PENDING_EXPLANATION,
-    UNDER_REVIEW,
-    RESOLVED,
-    WAIVED
-}
-
-public enum ExplanationStatus {
-    DRAFT,
-    SUBMITTED,
-    MANAGER_REVIEWED,
-    ACCEPTED,
-    REJECTED,
-    DISCIPLINARY_ACTION_CREATED,
-    CLOSED_NO_CONSEQUENCE
-}
-
-enum DisciplinaryActionType {
-    REMARK,
-    REPRIMAND,
-    SEVERE_REPRIMAND
-}
-
-enum DisciplinaryActionStatus {
-    ACTIVE,
-    CANCELLED,
-    CLOSED
-}
-
-enum RewardType {
-    THANKS,
-    AWARD,
-    CERTIFICATE,
-    BONUS
-}
-
-public enum RewardStatus {
-    DRAFT,
-    APPROVED,
-    GRANTED,
-    CANCELLED
-}
-
-enum NotificationStatus {
-    NEW,
-    READ,
-    ARCHIVED
-}
-
 
 
 @Entity

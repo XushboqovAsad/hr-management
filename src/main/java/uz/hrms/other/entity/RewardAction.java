@@ -1,7 +1,7 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.RewardStatus;
+import uz.hrms.other.enums.RewardStatus;
 import uz.hrms.other.RewardType;
 
 import java.math.BigDecimal;

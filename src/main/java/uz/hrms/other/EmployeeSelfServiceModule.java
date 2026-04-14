@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+
+import java.security.Permission;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
@@ -36,7 +38,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.enums.NotificationStatus;
 import uz.hrms.other.repository.AuditLogRepository;
+import uz.hrms.other.repository.PermissionRepository;
+import uz.hrms.other.service.AbsenceService;
+import uz.hrms.other.service.AttendanceService;
+import uz.hrms.other.service.BusinessTripService;
+import uz.hrms.other.service.DismissalService;
 
 record EmployeeSelfProfileResponse(
     UUID employeeId,

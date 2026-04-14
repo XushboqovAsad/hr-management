@@ -1,7 +1,7 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.ExplanationStatus;
+import uz.hrms.other.enums.ExplanationStatus;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
