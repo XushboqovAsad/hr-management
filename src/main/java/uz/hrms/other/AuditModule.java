@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.repository.AuditLogRepository;
 
 import java.io.IOException;
 import java.time.Instant;

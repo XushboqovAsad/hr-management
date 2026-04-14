@@ -691,8 +691,6 @@ interface LmsCourseRepository extends JpaRepository<LmsCourse, UUID> {
     Optional<LmsCourse> findByCodeIgnoreCaseAndDeletedFalse(String code);
     List<LmsCourse> findAllByDeletedFalseOrderByTitleAsc();
     List<LmsCourse> findAllByDeletedFalseAndStatusOrderByTitleAsc(LmsCourseStatus status);
-    List<LmsCourse> findAllByDeletedFalseOrderByTitleAsc();
-    List<LmsCourse> findAllByDeletedFalseAndStatusOrderByTitleAsc(LmsCourseStatus status);
 
     @Query(
         "select c from LmsCourse c where c.deleted = false and (:query is null or lower(c.title) like lower(concat('%', :query, '%')) " +

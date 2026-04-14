@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.repository.AuditLogRepository;
 
 enum ReferenceCatalogKey {
     ORDER_TYPES("order-types", "Типы приказов", "Справочник типов кадровых приказов"),

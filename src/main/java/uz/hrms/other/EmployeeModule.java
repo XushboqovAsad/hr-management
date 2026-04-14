@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.audit.SecurityAuditService;
+import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.repository.AuditLogRepository;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

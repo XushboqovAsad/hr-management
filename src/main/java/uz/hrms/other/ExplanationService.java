@@ -16,6 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.entity.Department;
+import uz.hrms.other.entity.Employee;
+import uz.hrms.other.entity.RewardAction;
+import uz.hrms.other.repository.AuditLogRepository;
+import uz.hrms.other.repository.DepartmentRepository;
+import uz.hrms.other.repository.EmployeeRepository;
 
 @Service
 @Transactional
@@ -841,7 +848,7 @@ class ExplanationService {
     }
 
     private String trimToNull(String value) {
-        if (StringUtils.hasText(value) == false) {
+        if (!StringUtils.hasText(value)) {
             return null;
         }
         return value.trim();

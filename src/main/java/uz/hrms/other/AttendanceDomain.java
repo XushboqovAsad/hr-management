@@ -796,7 +796,7 @@ class AttendanceAdjustment extends BaseEntity {
 
 @Entity
 @Table(schema = "hr", name = "attendance_incidents")
-class AttendanceIncident extends BaseEntity {
+public class AttendanceIncident extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

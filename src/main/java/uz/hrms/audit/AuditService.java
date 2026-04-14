@@ -8,12 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import uz.hrms.AuditLog;
-import uz.hrms.AuditLogRepository;
-import uz.hrms.security.CurrentUser;
+import uz.hrms.auth.CurrentUser;
+import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.repository.AuditLogRepository;
 
 import java.time.Instant;
-import java.util.UUID;
+
 
 @Service
 public class AuditService {
@@ -26,16 +26,19 @@ public class AuditService {
 
     @Transactional
     public void logRequest(HttpServletRequest request, HttpServletResponse response) {
-        if (request.getRequestURI().startsWith("/api/") == false) {
+        if (!request.getRequestURI().startsWith("/api/")) {
             return;
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         CurrentUser currentUser = authentication != null && authentication.getPrincipal() instanceof CurrentUser user ? user : null;
         AuditLog auditLog = new AuditLog();
+
         if (currentUser != null) {
-            auditLog.setActorUserId(currentUser.getUserId());
-            auditLog.setActorEmployeeId(currentUser.getEmployeeId());
+            auditLog.setActorUserId(currentUser.userId());
+            auditLog.setActorEmployeeId(currentUser.employeeId());
         }
+
         auditLog.setAction(request.getMethod() + " " + request.getRequestURI());
         auditLog.setDetailsJson("{\"status\":" + response.getStatus() + "}");
         auditLog.setIpAddress(request.getRemoteAddr());
@@ -56,7 +59,7 @@ public class AuditService {
                         item.getEntityTable(),
                         item.getEntityId(),
                         item.getDetailsJson(),
-                        item.getOccurredAt()
+                        item.getOccurredAt() == null ? null : item.getOccurredAt().toInstant()
                 ));
     }
 }

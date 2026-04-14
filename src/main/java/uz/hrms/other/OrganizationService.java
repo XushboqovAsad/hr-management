@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
+import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.repository.AuditLogRepository;
 
 @Service
 @Validated

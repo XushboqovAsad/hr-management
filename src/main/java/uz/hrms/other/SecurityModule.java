@@ -1,156 +1,32 @@
 package uz.hrms.other;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-import javax.crypto.SecretKey;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
+import uz.hrms.auth.CurrentUser;
+import uz.hrms.other.entity.Department;
+import uz.hrms.other.repository.DepartmentRepository;
+import uz.hrms.other.repository.EmployeeAssignmentRepository;
+import uz.hrms.security.JwtAuthenticationFilter;
+
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-record CurrentUser(
-        UUID userId,
-        UUID employeeId,
-        String username,
-        String passwordHash,
-        boolean active,
-        Set<String> roles,
-        Set<String> permissions
-) implements UserDetails {
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<String> values = new LinkedHashSet<>();
-        roles.forEach(role -> values.add("ROLE_" + role));
-        values.addAll(permissions);
-        return values.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
-    }
-
-    @Override
-    public String getPassword() { return passwordHash; }
-    @Override
-    public String getUsername() { return username; }
-    @Override
-    public boolean isAccountNonExpired() { return active; }
-    @Override
-    public boolean isAccountNonLocked() { return active; }
-    @Override
-    public boolean isCredentialsNonExpired() { return active; }
-    @Override
-    public boolean isEnabled() { return active; }
-}
-
-@Component
-class JwtService {
-
-    private final JwtProperties jwtProperties;
-    private final SecretKey secretKey;
-
-    JwtService(JwtProperties jwtProperties) {
-        this.jwtProperties = jwtProperties;
-        this.secretKey = Keys.hmacShaKeyFor(jwtProperties.secret().getBytes(StandardCharsets.UTF_8));
-    }
-
-    String generateAccessToken(CurrentUser currentUser) {
-        Instant now = Instant.now();
-        var builder = Jwts.builder()
-                .issuer(jwtProperties.issuer())
-                .subject(currentUser.username())
-                .claim("uid", currentUser.userId().toString())
-                .claim("roles", currentUser.roles())
-                .issuedAt(java.util.Date.from(now))
-                .expiration(java.util.Date.from(now.plus(jwtProperties.accessTokenTtl())))
-                .signWith(secretKey);
-        if (currentUser.employeeId() == null) {
-            return builder.compact();
-        }
-        builder.claim("eid", currentUser.employeeId().toString());
-        return builder.compact();
-    }
-
-    UUID extractUserId(String token) {
-        return UUID.fromString(parse(token).getPayload().get("uid", String.class));
-    }
-
-    long expiresInSeconds() {
-        return jwtProperties.accessTokenTtl().toSeconds();
-    }
-
-    Jws<Claims> parse(String token) throws JwtException {
-        return Jwts.parser().verifyWith(secretKey).requireIssuer(jwtProperties.issuer()).build().parseSignedClaims(token);
-    }
-}
-
-@Component
-class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-    private final JwtService jwtService;
-    private final SecurityUserService securityUserService;
-
-    JwtAuthenticationFilter(JwtService jwtService, SecurityUserService securityUserService) {
-        this.jwtService = jwtService;
-        this.securityUserService = securityUserService;
-    }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (header.startsWith("Bearer ")) {
-            try {
-                UUID userId = jwtService.extractUserId(header.substring(7));
-                if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                    CurrentUser currentUser = securityUserService.loadByUserId(userId);
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(currentUser, null, currentUser.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (JwtException | IllegalArgumentException ignored) {
-                SecurityContextHolder.clearContext();
-            }
-        }
-        filterChain.doFilter(request, response);
-    }
-}
 
 @Component("accessPolicy")
 class AccessPolicy {
@@ -197,7 +73,8 @@ class AccessPolicy {
             return true;
         }
         String requiredAuthority = authority("EMPLOYEE", "READ");
-        if (currentUser.permissions().contains(requiredAuthority) == false) {
+
+        if (!currentUser.permissions().contains(requiredAuthority)) {
             return false;
         }
 
@@ -211,7 +88,7 @@ class AccessPolicy {
                 .collect(Collectors.toSet());
 
         for (UserRoleAssignment assignment : assignments) {
-            if (allowedRoles.contains(assignment.getRole().getId()) == false) {
+            if (!allowedRoles.contains(assignment.getRole().getId())) {
                 continue;
             }
             if (scopeAllows(currentUser, assignment.getScopeType(), assignment.getScopeDepartmentId(), null, employeeId)) {
@@ -245,6 +122,7 @@ class AccessPolicy {
         if (assignment == null) {
             return false;
         }
+
         Department current = assignment.getDepartment();
         while (current != null) {
             if (current.getId().equals(scopeDepartmentId)) {
@@ -269,7 +147,8 @@ class AccessPolicy {
 
     private boolean delegationActive(AccessDelegation delegation) {
         LocalDate today = LocalDate.now();
-        if (delegation.isActive() == false) {
+
+        if (!delegation.isActive()) {
             return false;
         }
         if (delegation.getValidFrom() != null && delegation.getValidFrom().isAfter(today)) {
@@ -283,7 +162,8 @@ class AccessPolicy {
             return null;
         }
         Object principal = authentication.getPrincipal();
-        if ((principal instanceof CurrentUser) == false) {
+
+        if (!(principal instanceof CurrentUser)) {
             return null;
         }
         return (CurrentUser) principal;
