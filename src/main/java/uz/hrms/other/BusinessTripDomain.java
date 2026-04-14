@@ -17,6 +17,7 @@ import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uz.hrms.other.entity.BaseEntity;
 
 public final class BusinessTripDomain {
     private BusinessTripDomain() {
@@ -57,7 +58,7 @@ enum BusinessTripApprovalStatus {
     SKIPPED
 }
 
-enum PayrollSyncStatus {
+public enum PayrollSyncStatus {
     PENDING,
     SENT,
     ACKNOWLEDGED,

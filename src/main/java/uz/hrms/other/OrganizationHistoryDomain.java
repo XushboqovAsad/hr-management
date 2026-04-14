@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uz.hrms.other.entity.BaseEntity;
 
 @Entity
 @Table(schema = "hr", name = "department_history")

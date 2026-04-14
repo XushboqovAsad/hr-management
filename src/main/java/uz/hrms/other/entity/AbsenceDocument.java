@@ -1,14 +1,15 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
+import uz.hrms.other.AbsenceDocumentStatus;
 
 @Entity
-@Table(schema = "hr", name = "explanation_documents")
-public class ExplanationDocument extends BaseEntity {
+@Table(schema = "hr", name = "absence_documents")
+public class AbsenceDocument extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "explanation_id", nullable = false)
-    private Explanation explanation;
+    @JoinColumn(name = "absence_record_id", nullable = false)
+    private AbsenceRecord absenceRecord;
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
@@ -31,15 +32,19 @@ public class ExplanationDocument extends BaseEntity {
     @Column(name = "is_current", nullable = false)
     private boolean current = true;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "document_status", nullable = false, length = 20)
+    private AbsenceDocumentStatus documentStatus = AbsenceDocumentStatus.ACTIVE;
+
     @Column(name = "description", length = 1000)
     private String description;
 
-    public Explanation getExplanation() {
-        return explanation;
+    public AbsenceRecord getAbsenceRecord() {
+        return absenceRecord;
     }
 
-    public void setExplanation(Explanation explanation) {
-        this.explanation = explanation;
+    public void setAbsenceRecord(AbsenceRecord absenceRecord) {
+        this.absenceRecord = absenceRecord;
     }
 
     public String getTitle() {
@@ -96,6 +101,14 @@ public class ExplanationDocument extends BaseEntity {
 
     public void setCurrent(boolean current) {
         this.current = current;
+    }
+
+    public AbsenceDocumentStatus getDocumentStatus() {
+        return documentStatus;
+    }
+
+    public void setDocumentStatus(AbsenceDocumentStatus documentStatus) {
+        this.documentStatus = documentStatus;
     }
 
     public String getDescription() {
