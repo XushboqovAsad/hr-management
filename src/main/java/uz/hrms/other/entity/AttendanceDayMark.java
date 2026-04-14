@@ -1,7 +1,7 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.AttendanceMarkSource;
+import uz.hrms.other.enums.AttendanceMarkSource;
 
 import java.time.LocalDate;
 import java.util.UUID;
