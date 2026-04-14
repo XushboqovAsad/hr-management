@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 
 @Component("accessPolicy")
-class AccessPolicy {
+public class AccessPolicy {
 
     private final UserRoleAssignmentRepository userRoleAssignmentRepository;
     private final RolePermissionRepository rolePermissionRepository;

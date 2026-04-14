@@ -1,16 +1,16 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.AbsenceStatus;
+import uz.hrms.other.enums.AbsenceStatus;
 import uz.hrms.other.AbsenceType;
-import uz.hrms.other.PayrollSyncStatus;
+import uz.hrms.other.enums.PayrollSyncStatus;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Entity
 @Table(schema = "hr", name = "absence_records")
-class AbsenceRecord extends BaseEntity {
+public class AbsenceRecord extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

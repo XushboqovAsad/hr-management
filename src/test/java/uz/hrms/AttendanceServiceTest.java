@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import uz.hrms.other.*;
-import uz.hrms.other.repository.AuditLogRepository;
+import uz.hrms.other.repository.*;
 
 class AttendanceServiceTest {
 

@@ -27,7 +27,7 @@ import uz.hrms.other.repository.*;
 
 @Service
 @Transactional
-class AttendanceService {
+public class AttendanceService {
 
     private final ScudEventRepository scudEventRepository;
     private final WorkScheduleRepository workScheduleRepository;

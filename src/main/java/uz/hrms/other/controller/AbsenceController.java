@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.*;
+import uz.hrms.other.enums.AbsenceStatus;
 
 @RestController
 @RequestMapping("/api/v1/absences")

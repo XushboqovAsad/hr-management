@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(schema = "hr", name = "attendance_day_marks")
-class AttendanceDayMark extends BaseEntity {
+public class AttendanceDayMark extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

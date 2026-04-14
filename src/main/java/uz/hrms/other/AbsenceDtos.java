@@ -2,6 +2,8 @@ package uz.hrms.other;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import uz.hrms.other.enums.*;
+
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;

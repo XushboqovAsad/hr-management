@@ -1,7 +1,7 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
-import uz.hrms.other.AbsenceDocumentStatus;
+import uz.hrms.other.enums.AbsenceDocumentStatus;
 
 @Entity
 @Table(schema = "hr", name = "absence_documents")

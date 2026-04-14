@@ -36,7 +36,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.entity.HrNotification;
 import uz.hrms.other.repository.AuditLogRepository;
+import uz.hrms.other.repository.HrNotificationRepository;
 
 record EmployeeSelfProfileResponse(
     UUID employeeId,

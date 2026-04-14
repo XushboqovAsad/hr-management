@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
 import uz.hrms.other.*;
+import uz.hrms.other.enums.BusinessTripStatus;
 import uz.hrms.other.repository.AuditLogRepository;
 
 class BusinessTripServiceTest {
@@ -58,7 +59,7 @@ class BusinessTripServiceTest {
 
     @Test
     void generateOrderRequiresApprovedTrip() {
-        BusinessTrip trip = trip(BusinessTripStatus.DRAFT);
+        BusinessTrip trip = trip(uz.hrms.other.enums.BusinessTripStatus.DRAFT);
         when(businessTripRepository.findByIdAndDeletedFalse(trip.getId())).thenReturn(Optional.of(trip));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> service.generateOrder(trip.getId(), null));
@@ -68,7 +69,7 @@ class BusinessTripServiceTest {
 
     @Test
     void closeRequiresSupportingDocuments() {
-        BusinessTrip trip = trip(BusinessTripStatus.REPORT_SUBMITTED);
+        BusinessTrip trip = trip(uz.hrms.other.enums.BusinessTripStatus.REPORT_SUBMITTED);
         trip.setReportSubmittedAt(java.time.OffsetDateTime.now());
         trip.setReportText("Report");
         when(businessTripRepository.findByIdAndDeletedFalse(trip.getId())).thenReturn(Optional.of(trip));

@@ -22,6 +22,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import uz.hrms.other.*;
+import uz.hrms.other.enums.BusinessTripStatus;
+import uz.hrms.other.enums.PayrollSyncStatus;
 
 @WebMvcTest(controllers = BusinessTripController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -52,7 +54,7 @@ class BusinessTripControllerTest {
                 "Customer meeting",
                 LocalDate.of(2026, 4, 10),
                 LocalDate.of(2026, 4, 12),
-                BusinessTripStatus.ON_APPROVAL,
+                uz.hrms.other.enums.BusinessTripStatus.ON_APPROVAL,
                 false
             )
         ));
@@ -70,7 +72,7 @@ class BusinessTripControllerTest {
         UUID employeeId = UUID.randomUUID();
         UUID departmentId = UUID.randomUUID();
         when(accessPolicy.hasPermission(any(), eq("BUSINESS_TRIP"), eq("WRITE"))).thenReturn(true);
-        when(businessTripService.create(any())).thenReturn(response(tripId, employeeId, departmentId, BusinessTripStatus.DRAFT));
+        when(businessTripService.create(any())).thenReturn(response(tripId, employeeId, departmentId, uz.hrms.other.enums.BusinessTripStatus.DRAFT));
 
         mockMvc.perform(post("/api/v1/business-trips")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +106,7 @@ class BusinessTripControllerTest {
         UUID departmentId = UUID.randomUUID();
         when(accessPolicy.hasPermission(any(), eq("BUSINESS_TRIP"), eq("WRITE"))).thenReturn(true);
         when(businessTripService.submitReport(eq(tripId), any())).thenReturn(
-            response(tripId, employeeId, departmentId, BusinessTripStatus.REPORT_SUBMITTED)
+            response(tripId, employeeId, departmentId, uz.hrms.other.enums.BusinessTripStatus.REPORT_SUBMITTED)
         );
 
         mockMvc.perform(post("/api/v1/business-trips/{id}/report", tripId)
@@ -143,7 +145,7 @@ class BusinessTripControllerTest {
             .andExpect(status().isForbidden());
     }
 
-    private BusinessTripResponse response(UUID tripId, UUID employeeId, UUID departmentId, BusinessTripStatus status) {
+    private BusinessTripResponse response(UUID tripId, UUID employeeId, UUID departmentId, uz.hrms.other.enums.BusinessTripStatus status) {
         return new BusinessTripResponse(
             tripId,
             employeeId,

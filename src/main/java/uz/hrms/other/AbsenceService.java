@@ -17,11 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import uz.hrms.other.entity.AbsenceHistory;
-import uz.hrms.other.entity.AbsenceRecord;
-import uz.hrms.other.entity.AttendanceDayMark;
+import uz.hrms.other.entity.*;
+import uz.hrms.other.enums.*;
+import uz.hrms.other.enums.BusinessTripStatus;
 import uz.hrms.other.repository.*;
-import uz.hrms.other.entity.AuditLog;
 
 @Service
 @Transactional
@@ -293,17 +292,17 @@ class AbsenceService {
         return absenceRecordRepository.findAllByEmployeeIdAndDeletedFalseAndStartDateLessThanEqualAndEndDateGreaterThanEqual(employeeId, to, from)
             .stream()
             .filter(item -> item.getStatus() != AbsenceStatus.REJECTED && item.getStatus() != AbsenceStatus.CANCELLED)
-            .anyMatch(item -> currentId == null || item.getId().equals(currentId) == false);
+            .anyMatch(item -> !item.getId().equals(currentId));
     }
 
     private boolean hasBusinessTripOverlap(UUID employeeId, LocalDate from, LocalDate to) {
-        List<BusinessTripStatus> blockingStatuses = List.of(
-            BusinessTripStatus.ON_APPROVAL,
-            BusinessTripStatus.APPROVED,
-            BusinessTripStatus.ORDER_CREATED,
-            BusinessTripStatus.IN_PROGRESS,
-            BusinessTripStatus.REPORT_PENDING,
-            BusinessTripStatus.REPORT_SUBMITTED,
+        List<uz.hrms.other.enums.BusinessTripStatus> blockingStatuses = List.of(
+            uz.hrms.other.enums.BusinessTripStatus.ON_APPROVAL,
+            uz.hrms.other.enums.BusinessTripStatus.APPROVED,
+            uz.hrms.other.enums.BusinessTripStatus.ORDER_CREATED,
+            uz.hrms.other.enums.BusinessTripStatus.IN_PROGRESS,
+            uz.hrms.other.enums.BusinessTripStatus.REPORT_PENDING,
+            uz.hrms.other.enums.BusinessTripStatus.REPORT_SUBMITTED,
             BusinessTripStatus.OVERDUE
         );
         return businessTripRepository.findAllByEmployeeIdAndDeletedFalseOrderByCreatedAtDesc(employeeId)

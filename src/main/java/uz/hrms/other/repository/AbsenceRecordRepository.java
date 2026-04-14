@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-interface AbsenceRecordRepository extends JpaRepository<AbsenceRecord, UUID> {
+public interface AbsenceRecordRepository extends JpaRepository<AbsenceRecord, UUID> {
     Optional<AbsenceRecord> findByIdAndDeletedFalse(UUID id);
 
     List<AbsenceRecord> findAllByDeletedFalseOrderByCreatedAtDesc();
