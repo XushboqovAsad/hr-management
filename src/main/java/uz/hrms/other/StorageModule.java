@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import java.io.IOException;
 import java.io.InputStream;

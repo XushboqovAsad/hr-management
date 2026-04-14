@@ -1,6 +1,9 @@
 package uz.hrms;
 
 import org.junit.jupiter.api.Test;
+import uz.hrms.other.CurrentUser;
+import uz.hrms.other.JwtProperties;
+import uz.hrms.other.JwtService;
 
 import java.time.Duration;
 import java.util.Set;

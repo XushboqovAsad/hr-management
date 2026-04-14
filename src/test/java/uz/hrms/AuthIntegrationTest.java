@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import uz.hrms.other.*;
 
 import java.time.LocalDate;
 
@@ -21,7 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AuthIntegrationTest {
 
     @Autowired MockMvc mockMvc;
-    @Autowired UserAccountRepository userAccountRepository;
+    @Autowired
+    UserAccountRepository userAccountRepository;
     @Autowired RoleRepository roleRepository;
     @Autowired UserRoleAssignmentRepository userRoleAssignmentRepository;
     @Autowired EmployeeRepository employeeRepository;

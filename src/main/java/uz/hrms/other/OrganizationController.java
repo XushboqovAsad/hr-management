@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import jakarta.validation.Valid;
 import java.util.List;

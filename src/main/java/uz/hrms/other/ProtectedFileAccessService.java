@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;

@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import java.time.LocalDate;
 import org.springframework.scheduling.annotation.Scheduled;

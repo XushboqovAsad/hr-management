@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

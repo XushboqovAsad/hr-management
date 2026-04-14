@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
@@ -6,7 +6,6 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 

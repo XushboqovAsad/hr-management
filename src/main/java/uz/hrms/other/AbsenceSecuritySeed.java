@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import java.util.EnumMap;
 import java.util.List;

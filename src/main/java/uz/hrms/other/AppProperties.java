@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

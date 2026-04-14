@@ -1,5 +1,7 @@
 package uz.hrms;
 
+import uz.hrms.other.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;

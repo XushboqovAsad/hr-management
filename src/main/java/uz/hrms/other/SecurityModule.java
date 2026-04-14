@@ -1,4 +1,4 @@
-package uz.hrms;
+package uz.hrms.other;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
