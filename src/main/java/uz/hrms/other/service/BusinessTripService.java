@@ -27,7 +27,7 @@ import uz.hrms.other.repository.*;
 
 @Service
 @Transactional
-class BusinessTripService {
+public class BusinessTripService {
 
     private final BusinessTripRepository businessTripRepository;
     private final BusinessTripDocumentRepository businessTripDocumentRepository;

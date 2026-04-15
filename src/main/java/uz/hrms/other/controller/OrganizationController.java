@@ -1,4 +1,4 @@
-package uz.hrms.other;
+package uz.hrms.other.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import uz.hrms.other.AccessPolicy;
+import uz.hrms.other.OrganizationService;
 
 @RestController
 @RequestMapping("/api/v1/org")

@@ -3,13 +3,14 @@ package uz.hrms.other.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import uz.hrms.other.enums.NotificationStatus;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "hr", name = "notifications")
-class HrNotification extends BaseEntity {
+public class HrNotification extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipient_employee_id")

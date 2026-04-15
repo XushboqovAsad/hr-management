@@ -1,7 +1,7 @@
 package uz.hrms.other.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import uz.hrms.other.BusinessTrip;
+import uz.hrms.other.entity.BusinessTrip;
 import uz.hrms.other.enums.BusinessTripStatus;
 
 import java.time.LocalDate;

@@ -13,15 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ResponseStatusException;
-import uz.hrms.other.*;
-import uz.hrms.other.entity.AuditLog;
+import uz.hrms.other.dto.*;
 import uz.hrms.other.entity.*;
-import uz.hrms.other.repository.AuditLogRepository;
+import uz.hrms.other.enums.*;
 import uz.hrms.other.repository.*;
 
 @Service
 @Transactional
-class DismissalService {
+public class DismissalService {
 
     private final DismissalRequestRepository dismissalRequestRepository;
     private final ClearanceChecklistRepository clearanceChecklistRepository;

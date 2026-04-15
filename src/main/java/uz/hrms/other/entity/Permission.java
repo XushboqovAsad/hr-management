@@ -1,12 +1,13 @@
 package uz.hrms.other.entity;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "permissions", schema = "auth")
-class Permission extends BaseEntity {
+public class Permission extends BaseEntity {
 
     @Column(name = "module_code", nullable = false)
     private String moduleCode;

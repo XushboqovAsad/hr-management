@@ -1,4 +1,4 @@
-package uz.hrms.other;
+package uz.hrms.other.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

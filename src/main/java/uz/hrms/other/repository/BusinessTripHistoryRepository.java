@@ -1,7 +1,7 @@
 package uz.hrms.other.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import uz.hrms.other.BusinessTripHistory;
+import uz.hrms.other.entity.BusinessTripHistory;
 
 import java.util.List;
 import java.util.UUID;

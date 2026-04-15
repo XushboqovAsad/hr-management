@@ -1,8 +1,17 @@
 package uz.hrms.other.entity;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
+import uz.hrms.other.enums.ClearanceItemStatus;
+import uz.hrms.other.enums.ClearanceItemType;
+import uz.hrms.other.enums.ClearanceReturnStatus;
 
 @Entity
 @Table(schema = "hr", name = "clearance_checklist_items")
@@ -52,107 +61,31 @@ public class ClearanceChecklistItem extends BaseEntity {
     @Column(name = "sort_order", nullable = false)
     private int sortOrder;
 
-    public ClearanceChecklist getClearanceChecklist() {
-        return clearanceChecklist;
-    }
-
-    public void setClearanceChecklist(ClearanceChecklist clearanceChecklist) {
-        this.clearanceChecklist = clearanceChecklist;
-    }
-
-    public ClearanceItemType getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(ClearanceItemType itemType) {
-        this.itemType = itemType;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public ClearanceItemStatus getItemStatus() {
-        return itemStatus;
-    }
-
-    public void setItemStatus(ClearanceItemStatus itemStatus) {
-        this.itemStatus = itemStatus;
-    }
-
-    public ClearanceReturnStatus getReturnStatus() {
-        return returnStatus;
-    }
-
-    public void setReturnStatus(ClearanceReturnStatus returnStatus) {
-        this.returnStatus = returnStatus;
-    }
-
-    public String getResponsibleRole() {
-        return responsibleRole;
-    }
-
-    public void setResponsibleRole(String responsibleRole) {
-        this.responsibleRole = responsibleRole;
-    }
-
-    public UserAccount getResponsibleUser() {
-        return responsibleUser;
-    }
-
-    public void setResponsibleUser(UserAccount responsibleUser) {
-        this.responsibleUser = responsibleUser;
-    }
-
-    public OffsetDateTime getDueAt() {
-        return dueAt;
-    }
-
-    public void setDueAt(OffsetDateTime dueAt) {
-        this.dueAt = dueAt;
-    }
-
-    public OffsetDateTime getCompletedAt() {
-        return completedAt;
-    }
-
-    public void setCompletedAt(OffsetDateTime completedAt) {
-        this.completedAt = completedAt;
-    }
-
-    public String getAssetCode() {
-        return assetCode;
-    }
-
-    public void setAssetCode(String assetCode) {
-        this.assetCode = assetCode;
-    }
-
-    public String getAssetName() {
-        return assetName;
-    }
-
-    public void setAssetName(String assetName) {
-        this.assetName = assetName;
-    }
-
-    public String getCommentText() {
-        return commentText;
-    }
-
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
-    }
-
-    public int getSortOrder() {
-        return sortOrder;
-    }
-
-    public void setSortOrder(int sortOrder) {
-        this.sortOrder = sortOrder;
-    }
+    public ClearanceChecklist getClearanceChecklist() { return clearanceChecklist; }
+    public void setClearanceChecklist(ClearanceChecklist clearanceChecklist) { this.clearanceChecklist = clearanceChecklist; }
+    public ClearanceItemType getItemType() { return itemType; }
+    public void setItemType(ClearanceItemType itemType) { this.itemType = itemType; }
+    public String getItemName() { return itemName; }
+    public void setItemName(String itemName) { this.itemName = itemName; }
+    public ClearanceItemStatus getItemStatus() { return itemStatus; }
+    public void setItemStatus(ClearanceItemStatus itemStatus) { this.itemStatus = itemStatus; }
+    public ClearanceReturnStatus getReturnStatus() { return returnStatus; }
+    public void setReturnStatus(ClearanceReturnStatus returnStatus) { this.returnStatus = returnStatus; }
+    public String getResponsibleRole() { return responsibleRole; }
+    public void setResponsibleRole(String responsibleRole) { this.responsibleRole = responsibleRole; }
+    public UserAccount getResponsibleUser() { return responsibleUser; }
+    public void setResponsibleUser(UserAccount responsibleUser) { this.responsibleUser = responsibleUser; }
+    public OffsetDateTime getDueAt() { return dueAt; }
+    public void setDueAt(OffsetDateTime dueAt) { this.dueAt = dueAt; }
+    public OffsetDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(OffsetDateTime completedAt) { this.completedAt = completedAt; }
+    public String getAssetCode() { return assetCode; }
+    public void setAssetCode(String assetCode) { this.assetCode = assetCode; }
+    public String getAssetName() { return assetName; }
+    public void setAssetName(String assetName) { this.assetName = assetName; }
+    public String getCommentText() { return commentText; }
+    public void setCommentText(String commentText) { this.commentText = commentText; }
+    public int getSortOrder() { return sortOrder; }
+    public void setSortOrder(int sortOrder) { this.sortOrder = sortOrder; }
 }
+

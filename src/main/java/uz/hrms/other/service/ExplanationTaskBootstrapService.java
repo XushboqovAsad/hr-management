@@ -18,13 +18,13 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class ExplanationTaskBootstrapService {
+class ExplanationTaskBootstrapService {
 
-    private final ExplanationIncidentRepository explanationIncidentRepository;
-    private final ExplanationRepository explanationRepository;
+    private final uz.hrms.other.repository.ExplanationIncidentRepository explanationIncidentRepository;
+    private final uz.hrms.other.repository.ExplanationRepository explanationRepository;
     private final ExplanationHistoryRepository explanationHistoryRepository;
     private final HrNotificationRepository hrNotificationRepository;
-    private final AuditLogRepository auditLogRepository;
+    private final uz.hrms.other.repository.AuditLogRepository auditLogRepository;
     private final ObjectMapper objectMapper;
 
     ExplanationTaskBootstrapService(
@@ -32,7 +32,7 @@ public class ExplanationTaskBootstrapService {
             ExplanationRepository explanationRepository,
             ExplanationHistoryRepository explanationHistoryRepository,
             HrNotificationRepository hrNotificationRepository,
-            AuditLogRepository auditLogRepository,
+            uz.hrms.other.repository.AuditLogRepository auditLogRepository,
             ObjectMapper objectMapper
     ) {
         this.explanationIncidentRepository = explanationIncidentRepository;
