@@ -1,4 +1,4 @@
-package uz.hrms.other;
+package uz.hrms.other.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,8 +8,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import uz.hrms.other.entity.BaseEntity;
-import uz.hrms.other.entity.UserAccount;
 
 @Entity
 @Table(schema = "hr", name = "business_trip_history")
