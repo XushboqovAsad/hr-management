@@ -1,6 +1,7 @@
 package uz.hrms.other.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import uz.hrms.other.entity.UserAccount;
 
 import java.util.Optional;
 import java.util.UUID;

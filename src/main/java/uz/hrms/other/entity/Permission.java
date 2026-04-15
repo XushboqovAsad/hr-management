@@ -1,6 +1,10 @@
 package uz.hrms.other.entity;
 
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
 @Entity
 @Table(name = "permissions", schema = "auth")
 public class Permission extends BaseEntity {

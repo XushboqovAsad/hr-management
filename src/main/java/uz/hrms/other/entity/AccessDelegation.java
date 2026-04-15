@@ -1,13 +1,14 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
+import uz.hrms.other.enums.AccessScopeType;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "access_delegations", schema = "auth")
-class AccessDelegation extends BaseEntity {
+public class AccessDelegation extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "grantor_user_id", nullable = false)

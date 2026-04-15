@@ -1,4 +1,4 @@
-package uz.hrms.other;
+package uz.hrms.other.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.server.ResponseStatusException;
+import uz.hrms.other.DepartmentHistoryRepository;
+import uz.hrms.other.PositionHistoryRepository;
+import uz.hrms.other.StaffingUnitHistoryRepository;
 import uz.hrms.other.entity.AuditLog;
 import uz.hrms.other.repository.AuditLogRepository;
 
@@ -27,11 +30,11 @@ import uz.hrms.other.repository.AuditLogRepository;
 @Transactional
 class OrganizationService {
 
-    private final DepartmentRepository departmentRepository;
-    private final PositionRepository positionRepository;
-    private final StaffingUnitRepository staffingUnitRepository;
-    private final EmployeeRepository employeeRepository;
-    private final EmployeeAssignmentRepository employeeAssignmentRepository;
+    private final uz.hrms.other.repository.DepartmentRepository departmentRepository;
+    private final uz.hrms.other.repository.PositionRepository positionRepository;
+    private final uz.hrms.other.repository.StaffingUnitRepository staffingUnitRepository;
+    private final uz.hrms.other.repository.EmployeeRepository employeeRepository;
+    private final uz.hrms.other.repository.EmployeeAssignmentRepository employeeAssignmentRepository;
     private final DepartmentHistoryRepository departmentHistoryRepository;
     private final PositionHistoryRepository positionHistoryRepository;
     private final StaffingUnitHistoryRepository staffingUnitHistoryRepository;

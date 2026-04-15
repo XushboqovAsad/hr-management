@@ -1,10 +1,11 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
+import uz.hrms.other.enums.RoleCode;
 
 @Entity
 @Table(name = "roles", schema = "auth")
-class Role extends BaseEntity {
+public class Role extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "code", nullable = false)

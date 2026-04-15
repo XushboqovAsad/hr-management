@@ -1,4 +1,4 @@
-package uz.hrms.other;
+package uz.hrms.other.module;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +15,19 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import uz.hrms.audit.RequestAuditFilter;
 import uz.hrms.auth.CurrentUser;
+import uz.hrms.other.entity.AccessDelegation;
 import uz.hrms.other.entity.Department;
+import uz.hrms.other.entity.EmployeeAssignment;
+import uz.hrms.other.entity.UserRoleAssignment;
+import uz.hrms.other.enums.AccessScopeType;
+import uz.hrms.other.enums.RoleCode;
 import uz.hrms.other.repository.DepartmentRepository;
 import uz.hrms.other.repository.EmployeeAssignmentRepository;
+import uz.hrms.other.repository.*;
 import uz.hrms.security.JwtAuthenticationFilter;
+import uz.hrms.security.RateLimitingFilter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -118,6 +126,7 @@ public class AccessPolicy {
         if (scopeDepartmentId == null) {
             return false;
         }
+
         EmployeeAssignment assignment = employeeAssignmentRepository.findCurrentPrimaryAssignment(targetEmployeeId, LocalDate.now()).orElse(null);
         if (assignment == null) {
             return false;

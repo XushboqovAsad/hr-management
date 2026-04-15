@@ -1,13 +1,14 @@
 package uz.hrms.other.entity;
 
 import jakarta.persistence.*;
+import uz.hrms.other.enums.AccessScopeType;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "user_roles", schema = "auth")
-class UserRoleAssignment extends BaseEntity {
+public class UserRoleAssignment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
