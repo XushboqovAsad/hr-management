@@ -30,6 +30,7 @@ import uz.hrms.other.*;
 import uz.hrms.other.entity.AbsenceDocument;
 import uz.hrms.other.enums.AbsenceStatus;
 import uz.hrms.other.enums.AbsenceType;
+import uz.hrms.other.service.ProtectedFileAccessService;
 
 @RestController
 @RequestMapping("/api/v1/absences")

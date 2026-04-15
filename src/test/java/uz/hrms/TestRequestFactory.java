@@ -1,6 +1,6 @@
 package uz.hrms;
 
-import uz.hrms.other.*;
+import uz.hrms.other.dto.attendanceDtos.ScudEventIngestRequest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

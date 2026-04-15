@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import uz.hrms.other.*;
 import uz.hrms.other.enums.AbsenceStatus;
 import uz.hrms.other.enums.PayrollSyncStatus;
+import uz.hrms.other.service.ProtectedFileAccessService;
 
 @WebMvcTest(controllers = AbsenceController.class)
 @AutoConfigureMockMvc(addFilters = false)

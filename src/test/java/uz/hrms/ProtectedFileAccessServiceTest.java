@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import uz.hrms.audit.SecurityAuditService;
 import uz.hrms.other.LocalFileStorageService;
-import uz.hrms.other.ProtectedFileAccessService;
+import uz.hrms.other.service.ProtectedFileAccessService;
 
 import java.util.UUID;
 

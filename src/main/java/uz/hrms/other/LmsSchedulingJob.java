@@ -2,6 +2,7 @@ package uz.hrms.other;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import uz.hrms.other.service.LmsService;
 
 @Component
 class LmsSchedulingJob {

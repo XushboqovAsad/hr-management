@@ -22,6 +22,7 @@ import uz.hrms.other.*;
 import uz.hrms.other.enums.ExplanationIncidentStatus;
 import uz.hrms.other.enums.ExplanationStatus;
 import uz.hrms.other.enums.RewardStatus;
+import uz.hrms.other.service.ProtectedFileAccessService;
 
 @WebMvcTest(controllers = ExplanationController.class)
 @AutoConfigureMockMvc(addFilters = false)
