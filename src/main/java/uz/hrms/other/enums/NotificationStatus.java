@@ -1,6 +1,6 @@
 package uz.hrms.other.enums;
 
-enum NotificationStatus {
+public enum NotificationStatus {
     NEW,
     READ,
     ARCHIVED

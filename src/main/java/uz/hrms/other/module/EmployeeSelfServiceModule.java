@@ -40,6 +40,7 @@ import org.springframework.data.repository.query.Param;
 import uz.hrms.other.dto.DismissalListItemResponse;
 import uz.hrms.other.entity.AuditLog;
 import uz.hrms.other.entity.HrNotification;
+import uz.hrms.other.enums.NotificationStatus;
 import uz.hrms.other.repository.AuditLogRepository;
 import uz.hrms.other.repository.HrNotificationRepository;
 import uz.hrms.other.repository.PermissionRepository;
